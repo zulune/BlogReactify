@@ -1,3 +1,6 @@
+.idea/
+.vscode/
+
 parsed_log.md
 parse_git_log.py
 

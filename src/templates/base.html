@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% include 'css.html' %}
+    <title>React Django Blog</title>
+</head>
+<body>
+    <div class="container-fluid">
+        {% include 'navbar.html' %}
+        {% block content %}
+        {% endblock %}
+    </div>
+    {% include 'js.html' %}
+</body>
+</html>
