@@ -1,6 +1,9 @@
 .idea/
 .vscode/
 
+#
+__migrations__/
+
 parsed_log.md
 parse_git_log.py
 
