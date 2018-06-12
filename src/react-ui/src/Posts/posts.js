@@ -8,7 +8,8 @@ import PostInline from './PostInline';
 class Posts extends Component{
     constructor(props){
         super(props);
-        this.togglePostListClass = this.togglePostListClass.bind(this)
+        this.togglePostListClass = this.togglePostListClass.bind(this);
+        this.handleNewPost = this.handleNewPost.bind(this);
     }
     state = {
         posts: [],
@@ -36,6 +37,15 @@ class Posts extends Component{
         })
         .catch(error => {
             console.log("error", error)
+        })
+    }
+
+    handleNewPost(postItemData) {
+        console.log(postItemData);
+        let currentPosts = this.state.posts;
+        currentPosts.unshift(postItemData);
+        this.setState({
+            posts: currentPosts
         })
     }
 
@@ -78,7 +88,7 @@ class Posts extends Component{
                 </div>
                 {(csrfToken !== undefined && csrfToken !== null) ?
                     <div className='col-10 offset-1'>
-                        <PostCreate />
+                        <PostCreate newPostItemCreated={this.handleNewPost} />
                     </div>
                 : ""}
             </div>
