@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import cookie from "react-cookies";
+import 'whatwg-fetch';
 
 class PostCreate extends Component {
     constructor(props) {
-        super(props)
-        this.handleSubmit = this.handleSubmit.bind(this)
-        this.handleInputChange = this.handleInputChange.bind(this)
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.state = {
             draft: false,
             title: null,
@@ -13,21 +15,47 @@ class PostCreate extends Component {
         }
     }
 
+    createPosts(data) {
+        const endpoint = '/api/posts/';
+        const csrfToken = cookie.load('csrftoken');
+        let thisComp = this;
+        if (csrfToken !== undefined) {
+            let lookupOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify(data),
+                credentials: 'include'
+            };
+            fetch(endpoint, lookupOptions)
+                .then(response => {
+                    return response.json()
+                }).then(responseData => {
+                    console.log(responseData);
+                }).catch(error => {
+                    console.log("error", error);
+                    alert("An error occured, please try again later.")
+                })
+        }
+    }
+
     handleSubmit(event) {
-        event.preventDefault()
-        let data = this.state
-        if  (data['draft'] === 'on') {
+        event.preventDefault();
+        let data = this.state;
+        if (data['draft'] === 'on') {
             data['draft'] = true
         } else {
             data['draft'] = false
         }
-        console.log(data)
+        this.createPosts(data);
     }
 
     handleInputChange(event) {
-        event.preventDefault()
-        let key = event.target.name
-        let value = event.target.value
+        event.preventDefault();
+        let key = event.target.name;
+        let value = event.target.value;
         if (key === 'title') {
             if (value.length > 110) {
                 alert("This title is too long")
