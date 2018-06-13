@@ -8,6 +8,7 @@ class PostCreate extends Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleDraftChange = this.handleDraftChange.bind(this);
         this.clearForm = this.clearForm.bind(this);
         this.postTitleRef = React.createRef();
         this.postContentRef = React.createRef();
@@ -52,11 +53,6 @@ class PostCreate extends Component {
     handleSubmit(event) {
         event.preventDefault();
         let data = this.state;
-        if (data['draft'] === 'on') {
-            data['draft'] = true
-        } else {
-            data['draft'] = false
-        }
         this.createPosts(data);
     }
 
@@ -71,6 +67,12 @@ class PostCreate extends Component {
         }
         this.setState({
             [key]: value
+        })
+    }
+
+    handleDraftChange(event) {
+        this.setState({
+            draft: !this.state.draft
         })
     }
 
@@ -95,7 +97,7 @@ class PostCreate extends Component {
             draft: false,
             title: null,
             content: null,
-            publish: moment(new Date).format("YYYY-MM-DD")
+            publish: moment(new Date()).format("YYYY-MM-DD")
         });
         this.postTitleRef.current.focus()
     }
@@ -127,11 +129,16 @@ class PostCreate extends Component {
                     </div>
                     <div className="form-group">
                         <label htmlFor="draft" className="label-control">
-                            <input type="checkbox" id="draft"
+                            <input type="checkbox"
+                                   id="draft"
                                    name='draft' className='mr-2'
-                                   placeholder='Blog draft'
-                                   onChange={this.handleInputChange}/>
+                                   checked={this.state.draft}
+                                   onChange={this.handleDraftChange}
+                                   />
                           Draft</label>
+                            <button onClick={(event) => {event.preventDefault(); this.handleDraftChange()}}
+                                    className="btn btn-primary">Toggle Draft
+                            </button>
                     </div>
                     <div className="form-group">
                         <label htmlFor="publish" className="label-control">Publish: </label>
@@ -141,7 +148,7 @@ class PostCreate extends Component {
                                value={publish}
                                onChange={this.handleInputChange} required/>
                     </div>
-                    <button className="btn btn-primary">Save</button>
+                    <button type="submit" className="btn btn-primary">Save</button>
                     <button className="btn btn-warning" onClick={this.clearForm}>Cancel</button>
                 </form>
             </div>
