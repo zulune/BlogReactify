@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
 
 class PostInline extends Component{
 
@@ -9,7 +10,14 @@ class PostInline extends Component{
         return (
             <div className=''>
                 {post !== undefined ? <div className={elClass}>
-                        <h1>{post.title}</h1>
+                        <h1 className="card-title">
+                            <Link maintainScrollPosition={false} to={{
+                                    pathname: `/posts/${post.slug}`,
+                                    state: {fromDashboard: false}
+                                }}>
+                                {post.title}
+                            </Link>
+                        </h1>
                         <p className={showContent}>{post.content}</p>
                     </div>
                     : ""}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import {Link} from 'react-router-dom';
 
 class PostDetail extends Component {
     constructor(props) {
@@ -26,7 +26,17 @@ class PostDetail extends Component {
             <div className="col">
                 <p>{
                     (slug !== null) 
-                        ? <div className="jumbotron">{slug}</div> 
+                        ? <div className="jumbotron">
+                            {slug}
+                            <p className='lead'>
+                                <Link maintainScrollPosition={false} to={{
+                                    pathname: `/posts`,
+                                    state: {fromDashboard: false}
+                                }}>
+                                Posts
+                                </Link>
+                            </p>
+                        </div> 
                         : <div className="alert alert-info">Not found</div>
                     }
                 </p>
