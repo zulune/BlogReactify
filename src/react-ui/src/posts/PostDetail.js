@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import cookie from "react-cookies";
+import 'whatwg-fetch';
 
 class PostDetail extends Component {
     constructor(props) {
@@ -20,6 +22,13 @@ class PostDetail extends Component {
                 'Content-Type': 'application/json'
             }
         }
+
+        const csrfToken = cookie.load('csrftoken')
+        if (csrfToken !== undefined) {
+            lookupOptions['credentials'] = 'include'
+            lookupOptions['headers']['X-CSRFToken'] = csrfToken
+        }
+
         fetch(endpoint, lookupOptions)
         .then(response => {
             if (response.status == 404) {
@@ -67,19 +76,20 @@ class PostDetail extends Component {
                         ? <div className="jumbotron">
                             {post === null ? "Not found!":
                             <div>
-                            <h1 className="display-4">{post.title}</h1>
-                            {post.slug}
-                            <p className="lead">{post.content}</p>
-                            <hr className="my-4" />
-                            <p className='lead'>
-                                <Link maintainScrollPosition={false} to={{
-                                    pathname: `/posts`,
-                                    state: {fromDashboard: false}
-                                }}>
-                                Posts
-                                </Link>
-                            </p> 
-                        </div>}
+                                <h1 className="display-4">{post.title}</h1>
+                                {post.slug}
+                                <p className="lead">{post.content}</p>
+                                <hr className="my-4" />
+                                <p className='lead'>
+                                    <Link maintainScrollPosition={false} to={{
+                                        pathname: `/posts`,
+                                        state: {fromDashboard: false}
+                                    }}>
+                                    Posts
+                                    </Link>
+                                </p> 
+                                {post.owner === true ? <div>Update Post</div> : "" }
+                            </div>}
                         </div> 
                         : <div className="alert alert-info">Loading...</div>
                     }

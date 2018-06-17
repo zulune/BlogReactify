@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 
-import Posts from './Posts/posts';
-import PostDetail from './Posts/PosrDetail';
+import Posts from './posts/posts';
+import PostDetail from './posts/PostDetail';
 
 class App extends Component {
   render() {
