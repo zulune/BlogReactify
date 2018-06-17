@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'whatwg-fetch';
 import cookie from 'react-cookies';
 
-import PostCreate from './PostCreate';
+import PostUpdate from './PostUpdate';
 import PostInline from './PostInline';
 
 class Posts extends Component{
@@ -88,7 +88,7 @@ class Posts extends Component{
                 </div>
                 {(csrfToken !== undefined && csrfToken !== null) ?
                     <div className='col-10 offset-1'>
-                        <PostCreate newPostItemCreated={this.handleNewPost} />
+                        <PostUpdate newPostItemCreated={this.handleNewPost} />
                     </div>
                 : ""}
             </div>
