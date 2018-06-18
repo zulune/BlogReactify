@@ -3,7 +3,7 @@ import cookie from "react-cookies";
 import 'whatwg-fetch';
 import moment from 'moment';
 
-class PostUpdate extends Component {
+class PostForm extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,7 +42,6 @@ class PostUpdate extends Component {
                     if (thisComp.props.newPostItemCreated) {
                         thisComp.props.newPostItemCreated(responseData)
                     }
-                    thisComp.defaultState()
                     thisComp.clearForm()
                 }).catch(error => {
                     console.log("error", error);
@@ -117,12 +116,10 @@ class PostUpdate extends Component {
             event.preventDefault()
         }
         this.postCreateForm.reset()
+        this.defaultState()
     }
 
-    clearFormRefs(event) {
-        if (event) {
-            event.preventDefault()
-        }
+    clearFormRefs() {
         this.postTitleRef.current = '';
         this.postContentRef.current = '';
         // this.postPublishRef.current='';
@@ -206,11 +203,11 @@ class PostUpdate extends Component {
                             onChange={this.handleInputChange} required />
                     </div>
                     <button type="submit" className="btn btn-primary">Save</button>
-                    <button className={`btn btn-secondary ${cancelClass}`} onClick={this.clearForm}>Cancel</button>
+                    <button className={`btn btn-secondary`} onClick={this.clearForm}>Clear</button>
                 </form>
             </div>
         )
     }
 }
 
-export default PostUpdate
+export default PostForm
