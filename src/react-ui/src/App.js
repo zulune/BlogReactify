@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 
-import Posts from './posts/posts';
+import Posts from './posts/Posts';
 import PostDetail from './posts/PostDetail';
 import PostCreate from './posts/PostCreate';
 

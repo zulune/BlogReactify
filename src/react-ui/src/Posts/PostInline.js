@@ -9,19 +9,21 @@ class PostInline extends Component{
         const showContent = elClass === 'card' ? 'd-block' : 'd-none';
         return (
             <div className={elClass}>
-                {post !== undefined ? <div className="card">
-                <div className="card-body">
-                        <h1 className="card-title">
-                            <Link maintainScrollPosition={false} to={{
-                                    pathname: `/posts/${post.slug}`,
-                                    state: {fromDashboard: false}
-                                }}>
-                                {post.title}
-                            </Link>
-                        </h1>
-                        <p className={showContent}>{post.content}</p>
-                    </div></div>
-                    : ""}
+                {post !== undefined ?
+                    <div className="card">
+                        <div className="card-body">
+                            <h1 className="card-title">
+                                <Link maintainScrollPosition={false} to={{
+                                        pathname: `/posts/${post.slug}`,
+                                        state: {fromDashboard: false}
+                                    }}>
+                                    {post.title}
+                                </Link>
+                            </h1>
+                            <p className={showContent}>{post.content}</p>
+                        </div>
+                    </div>
+                : ""}
             </div>
         );
     }
