@@ -147,6 +147,7 @@ class PostForm extends Component {
             this.defaultState()
         }
         this.postTitleRef.current.focus()
+        this.postContentRef.current.focus()
     }
 
     render() {

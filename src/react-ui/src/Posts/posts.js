@@ -9,14 +9,29 @@ class Posts extends Component{
         super(props);
         this.togglePostListClass = this.togglePostListClass.bind(this);
         this.handleNewPost = this.handleNewPost.bind(this);
+        this.loadMorePosts = this.loadMorePosts.bind(this);
+        this.state = {
+            posts: [],
+            postListClass: 'cards',
+            next: null,
+            previous: null,
+            author: false,
+            count: 0
+        };
     }
-    state = {
-        posts: [],
-        postListClass: 'card'
-    };
 
-    loadPosts() {
-        const endpoint = '/api/posts/';
+    loadMorePosts() {
+        const {next} = this.state;
+        if (next !== null || next !== undefined) {
+            this.loadPosts(next)
+        }
+    }
+
+    loadPosts(nextEndpoint) {
+        let endpoint = 'api/posts/' ;
+        if (nextEndpoint !== undefined) {
+            endpoint = nextEndpoint
+        }
         let thisComp = this;
         let lookupOptions = {
             method: 'GET',
@@ -24,14 +39,27 @@ class Posts extends Component{
                 'Content-Type': 'application/json'
             }
         };
+
+        const csrfToken = cookie.load('csrftoken');
+        if (csrfToken !== undefined) {
+            lookupOptions['credentials'] = 'include';
+            lookupOptions['headers']['X-CSRFToken'] = csrfToken;
+        }
+
         fetch(endpoint, lookupOptions)
         .then(response => {
             return response.json()
         })
         .then(responseData => {
-            console.log(responseData);
+            // console.log(responseData);
+            // let currentPosts = thisComp.state.posts;
+            // let newPosts = currentPosts.concat(responseData.results);
             thisComp.setState({
-                posts: responseData.results
+                posts: thisComp.state.posts.concat(responseData.results),
+                next: responseData.next,
+                previous: responseData.previous,
+                author: responseData.author,
+                count: responseData.count
             })
         })
         .catch(error => {
@@ -52,7 +80,7 @@ class Posts extends Component{
         let currentListClass = this.state.postListClass;
         if (currentListClass === "") {
             this.setState({
-                postListClass: "card"
+                postListClass: "cards"
             })
         } else {
             this.setState({
@@ -64,21 +92,26 @@ class Posts extends Component{
     componentDidMount() {
         this.setState({
             posts: [],
-            postListClass: 'card'
+            postListClass: 'cards',
+            next: null,
+            previous: null,
+            author: false,
+            count: 0
         });
         this.loadPosts()
     }
     render() {
         const {posts} = this.state;
         const {postListClass} = this.state;
-        const csrfToken = cookie.load('csrftoken');
+        const {author} = this.state;
+        const {next} = this.state;
         return (
             <div className="row">
                 <div className='col-md-10'>
-                    <Link maintainScrollPosition={false} to={{
+                    {author === true ? <Link className="mr-2" maintainScrollPosition={false} to={{
                         pathname: `/posts/create/`,
                         state: { fromDashboard: false }
-                    }}>Create Post</Link>
+                    }}>Create Post</Link> : ""}
                     <button onClick={this.togglePostListClass}>Toggle class</button>
                 </div>
                 <div className="col-10 offset-1">
@@ -87,8 +120,9 @@ class Posts extends Component{
                             <PostInline post={postItem} elClass={postListClass} />
                         )
                     }) : <p>No posts found</p>}
+                    <hr/>
+                    {next !== null ? <button className="more btn btn-primary btn-lg btn-block" onClick={this.loadMorePosts}>Load more posts....</button> : "" }
                 </div>
-                <div className="clearfix"></div><br/>
             </div>
         )
     }

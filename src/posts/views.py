@@ -20,7 +20,7 @@ class PostPageNumberPagination(pagination.PageNumberPagination):
             author = True
         context = {
             'next': self.get_next_link(),
-            'previos': self.get_previous_link(),
+            'previous': self.get_previous_link(),
             'count': self.page.paginator.count,
             'author': author,
             'results': data,

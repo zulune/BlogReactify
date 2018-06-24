@@ -5,7 +5,6 @@ export default class PostCreate extends Component {
     render() {
         return (
             <div className="">
-                <div className="clearfix"></div>
                 <div>
                     <h1>Create Post</h1>
                     <PostForm />

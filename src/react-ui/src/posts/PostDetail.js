@@ -30,7 +30,7 @@ class PostDetail extends Component {
             headers: {
                 'Content-Type': 'application/json'
             }
-        }
+        };
 
         const csrfToken = cookie.load('csrftoken')
         if (csrfToken !== undefined) {
@@ -40,7 +40,7 @@ class PostDetail extends Component {
 
         fetch(endpoint, lookupOptions)
         .then(response => {
-            if (response.status == 404) {
+            if (response.status === 404) {
                 console.log('404! Page not found!');
             }
             return response.json()
@@ -65,13 +65,13 @@ class PostDetail extends Component {
         this.setState({
             slug: null,
             post: null
-        })
+        });
         if (this.props.match) {
             const {slug} = this.props.match.params;
             this.setState({
                 slug: slug,
                 doneLoading: false
-            })
+            });
             this.loadPost(slug)
         }
     }
@@ -96,10 +96,11 @@ class PostDetail extends Component {
                                     }}>
                                     Posts
                                     </Link>
-                                    <Link maintainScrollPosition={false} to={{
+
+                                    {post.owner === true ? <Link maintainScrollPosition={false} to={{
                                         pathname: `/posts/create/`,
                                         state: { fromDashboard: false }
-                                    }}>Create Post</Link>
+                                    }}>Create Post</Link> : ""}
                                 </p> 
                                 {post.owner === true ? <PostForm post={post} postItemUpdated={this.handlePostItemUpdated} /> : "" }
                             </div>}
